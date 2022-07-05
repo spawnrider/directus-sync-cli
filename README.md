@@ -1,7 +1,7 @@
 oclif-hello-world
 =================
 
-oclif example Hello World CLI
+oclif example Hello Status CLI
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
@@ -29,8 +29,10 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`directus-sync-cli env add`](#directus-sync-cli-env-add)
+* [`directus-sync-cli env list`](#directus-sync-cli-env-list)
+* [`directus-sync-cli env remove`](#directus-sync-cli-env-remove)
 * [`directus-sync-cli hello PERSON`](#directus-sync-cli-hello-person)
-* [`directus-sync-cli hello world`](#directus-sync-cli-hello-world)
 * [`directus-sync-cli help [COMMAND]`](#directus-sync-cli-help-command)
 * [`directus-sync-cli plugins`](#directus-sync-cli-plugins)
 * [`directus-sync-cli plugins:install PLUGIN...`](#directus-sync-cli-pluginsinstall-plugin)
@@ -41,38 +43,20 @@ USAGE
 * [`directus-sync-cli plugins:uninstall PLUGIN...`](#directus-sync-cli-pluginsuninstall-plugin-1)
 * [`directus-sync-cli plugins:uninstall PLUGIN...`](#directus-sync-cli-pluginsuninstall-plugin-2)
 * [`directus-sync-cli plugins update`](#directus-sync-cli-plugins-update)
+* [`directus-sync-cli status status`](#directus-sync-cli-status-status)
 
-## `directus-sync-cli hello PERSON`
-
-Say hello
-
-```
-USAGE
-  $ directus-sync-cli hello [PERSON] -f <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
-
-FLAGS
-  -f, --from=<value>  (required) Whom is saying hello
-
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ oex hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
-```
-
-_See code: [dist/commands/hello/index.ts](https://github.com/ArthurSamy/directus-sync-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
-
-## `directus-sync-cli hello world`
+## `directus-sync-cli env add`
 
 Say hello world
 
 ```
 USAGE
-  $ directus-sync-cli hello world
+  $ directus-sync-cli env add -n <value> -u <value> -t <value>
+
+FLAGS
+  -n, --name=<value>   (required) Name of the directus environment
+  -t, --token=<value>  (required) Access token of the directus
+  -u, --url=<value>    (required) Base url of the directus
 
 DESCRIPTION
   Say hello world
@@ -81,6 +65,66 @@ EXAMPLES
   $ oex hello world
   hello world! (./src/commands/hello/world.ts)
 ```
+
+## `directus-sync-cli env list`
+
+Say hello world
+
+```
+USAGE
+  $ directus-sync-cli env list
+
+DESCRIPTION
+  Say hello world
+
+EXAMPLES
+  $ oex list world
+  hello world! (./src/commands/hello/world.ts)
+```
+
+## `directus-sync-cli env remove`
+
+Say hello world
+
+```
+USAGE
+  $ directus-sync-cli env remove [-a] [-n <value>]
+
+FLAGS
+  -a, --all           Remove all configuration
+  -n, --name=<value>  Remove one configuration
+
+DESCRIPTION
+  Say hello world
+
+EXAMPLES
+  $ oex hello world
+  hello world! (./src/commands/hello/world.ts)
+```
+
+## `directus-sync-cli hello PERSON`
+
+Say hello
+
+```
+USAGE
+  $ directus-sync-cli hello [PERSON] -f <value> -a <value>
+
+ARGUMENTS
+  PERSON  Person to say hello to
+
+FLAGS
+  -a, --t=<value>     (required) Whom is saying hello
+  -f, --from=<value>  (required) Whom is saying hello
+
+DESCRIPTION
+  Say hello
+
+EXAMPLES
+  $ oex hello friend --from oclif hello friend from oclif! (./src/commands/hello/add.ts)
+```
+
+_See code: [dist/commands/hello/index.ts](https://github.com/ArthurSamy/directus-sync-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
 
 ## `directus-sync-cli help [COMMAND]`
 
@@ -330,5 +374,24 @@ FLAGS
 
 DESCRIPTION
   Update installed plugins.
+```
+
+## `directus-sync-cli status status`
+
+Say hello world
+
+```
+USAGE
+  $ directus-sync-cli status status -f <value>
+
+FLAGS
+  -f, --from=<value>  (required) Whom is saying hello
+
+DESCRIPTION
+  Say hello world
+
+EXAMPLES
+  $ oex hello world
+  hello world! (./src/commands/hello/world.ts)
 ```
 <!-- commandsstop -->
