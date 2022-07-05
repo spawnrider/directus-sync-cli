@@ -124,7 +124,7 @@ EXAMPLES
   $ oex hello friend --from oclif hello friend from oclif! (./src/commands/hello/add.ts)
 ```
 
-_See code: [dist/commands/hello/index.ts](https://github.com/ArthurSamy/directus-sync-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
+_See code: [dist/commands/hello/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
 
 ## `directus-sync-cli help [COMMAND]`
 
