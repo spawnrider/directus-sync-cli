@@ -22,7 +22,7 @@ export default class Remove extends Command {
     const {flags} = await this.parse(Remove)
 
     if (!flags.all && !flags.name) {
-      this.error('No flag specified')
+      this.error('A config name or flag -a must be specified')
     }
 
     if (flags.all) {

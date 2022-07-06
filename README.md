@@ -1,7 +1,7 @@
-oclif-hello-world
+directus-sync-cli
 =================
 
-oclif example Hello Status CLI
+directus-sync-cli Index CLI
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
@@ -32,7 +32,6 @@ USAGE
 * [`directus-sync-cli env add`](#directus-sync-cli-env-add)
 * [`directus-sync-cli env list`](#directus-sync-cli-env-list)
 * [`directus-sync-cli env remove`](#directus-sync-cli-env-remove)
-* [`directus-sync-cli hello PERSON`](#directus-sync-cli-hello-person)
 * [`directus-sync-cli help [COMMAND]`](#directus-sync-cli-help-command)
 * [`directus-sync-cli plugins`](#directus-sync-cli-plugins)
 * [`directus-sync-cli plugins:install PLUGIN...`](#directus-sync-cli-pluginsinstall-plugin)
@@ -47,7 +46,7 @@ USAGE
 
 ## `directus-sync-cli env add`
 
-Say hello world
+Add a directus configuration
 
 ```
 USAGE
@@ -59,32 +58,30 @@ FLAGS
   -u, --url=<value>    (required) Base url of the directus
 
 DESCRIPTION
-  Say hello world
+  Add a directus configuration
 
 EXAMPLES
-  $ oex hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ oex env add -n <NAME> -u <URL> -t <TOKEN>
 ```
 
 ## `directus-sync-cli env list`
 
-Say hello world
+List all saved directus configs
 
 ```
 USAGE
   $ directus-sync-cli env list
 
 DESCRIPTION
-  Say hello world
+  List all saved directus configs
 
 EXAMPLES
-  $ oex list world
-  hello world! (./src/commands/hello/world.ts)
+  $ oex list
 ```
 
 ## `directus-sync-cli env remove`
 
-Say hello world
+Remove one or all directus config
 
 ```
 USAGE
@@ -95,36 +92,13 @@ FLAGS
   -n, --name=<value>  Remove one configuration
 
 DESCRIPTION
-  Say hello world
+  Remove one or all directus config
 
 EXAMPLES
-  $ oex hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ oex env remove -a
+
+  $ oex env remove -n <NAME>
 ```
-
-## `directus-sync-cli hello PERSON`
-
-Say hello
-
-```
-USAGE
-  $ directus-sync-cli hello [PERSON] -f <value> -a <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
-
-FLAGS
-  -a, --t=<value>     (required) Whom is saying hello
-  -f, --from=<value>  (required) Whom is saying hello
-
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ oex hello friend --from oclif hello friend from oclif! (./src/commands/hello/add.ts)
-```
-
-_See code: [dist/commands/hello/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
 
 ## `directus-sync-cli help [COMMAND]`
 
