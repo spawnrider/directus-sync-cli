@@ -4,10 +4,9 @@ directus-sync-cli
 directus-sync-cli Preset CLI
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
-[![CircleCI](https://circleci.com/gh/oclif/hello-world/tree/main.svg?style=shield)](https://circleci.com/gh/oclif/hello-world/tree/main)
-[![Downloads/week](https://img.shields.io/npm/dw/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
-[![License](https://img.shields.io/npm/l/oclif-hello-world.svg)](https://github.com/oclif/hello-world/blob/main/package.json)
+[![Version](https://img.shields.io/npm/v/directus-sync-cli.svg)](https://npmjs.org/package/directus-sync-cli)
+[![Downloads/week](https://img.shields.io/npm/dw/directus-sync-cli.svg)](https://npmjs.org/package/directus-sync-cli)
+[![License](https://img.shields.io/npm/l/directus-sync-cli.svg)](https://github.com/spawnrider/directus-sync-cli/blob/master/LICENSE)
 
 <!-- toc -->
 * [Usage](#usage)
@@ -20,7 +19,7 @@ $ npm install -g directus-sync-cli
 $ directus-sync-cli COMMAND
 running command...
 $ directus-sync-cli (--version)
-directus-sync-cli/0.0.0 darwin-x64 node-v14.19.0
+directus-sync-cli/0.0.1 darwin-arm64 node-v14.18.1
 $ directus-sync-cli --help [COMMAND]
 USAGE
   $ directus-sync-cli COMMAND
@@ -42,7 +41,8 @@ USAGE
 * [`directus-sync-cli plugins:uninstall PLUGIN...`](#directus-sync-cli-pluginsuninstall-plugin-1)
 * [`directus-sync-cli plugins:uninstall PLUGIN...`](#directus-sync-cli-pluginsuninstall-plugin-2)
 * [`directus-sync-cli plugins update`](#directus-sync-cli-plugins-update)
-* [`directus-sync-cli status status`](#directus-sync-cli-status-status)
+* [`directus-sync-cli status`](#directus-sync-cli-status)
+* [`directus-sync-cli sync preset`](#directus-sync-cli-sync-preset)
 
 ## `directus-sync-cli env add`
 
@@ -138,7 +138,7 @@ EXAMPLES
   $ directus-sync-cli plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.0/src/commands/plugins/preset.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.0/src/commands/plugins/index.ts)_
 
 ## `directus-sync-cli plugins:install PLUGIN...`
 
@@ -350,19 +350,40 @@ DESCRIPTION
   Update installed plugins.
 ```
 
-## `directus-sync-cli status status`
+## `directus-sync-cli status`
 
-Say hello world
+Get the status for an environment
 
 ```
 USAGE
-  $ directus-sync-cli status status -f <value>
+  $ directus-sync-cli status -n <value>
 
 FLAGS
-  -f, --from=<value>  (required) Whom is saying hello
+  -n, --name=<value>  (required) Name of the environement to check
 
 DESCRIPTION
-  Say hello world
+  Get the status for an environment
+
+EXAMPLES
+  $ oex hello world
+  hello world! (./src/commands/hello/world.ts)
+```
+
+_See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.1/dist/commands/status/index.ts)_
+
+## `directus-sync-cli sync preset`
+
+Get the status for an environment
+
+```
+USAGE
+  $ directus-sync-cli sync preset -n <value>
+
+FLAGS
+  -n, --name=<value>  (required) Name of the environement to check
+
+DESCRIPTION
+  Get the status for an environment
 
 EXAMPLES
   $ oex hello world

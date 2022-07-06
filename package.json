@@ -1,6 +1,6 @@
 {
   "name": "directus-sync-cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Directus cli to sync envs",
   "author": "@spawnrider,@Aqwarium",
   "bin": {
@@ -64,7 +64,7 @@
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm lint",
-    "prepack": "npm build && oclif manifest && oclif readme",
+    "prepack": "npm run build && oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"
   },
