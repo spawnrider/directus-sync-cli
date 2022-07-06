@@ -1,6 +1,6 @@
 {
   "name": "directus-sync-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Directus cli to sync envs",
   "author": "@spawnrider,@Aqwarium",
   "bin": {
@@ -49,13 +49,18 @@
     "dirname": "directus-sync-cli",
     "commands": "./dist/commands",
     "plugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
+      "@oclif/plugin-help"
     ],
     "topicSeparator": " ",
     "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
+      "env": {
+        "description": "Manage directus conf"
+      },
+      "status": {
+        "description": "status directus env"
+      },
+      "sync": {
+        "description": "sync directus env"
       }
     }
   },

@@ -1,5 +1,6 @@
 import {Command, Flags} from '@oclif/core'
 import {DirectusConfig, listConfig, saveConfig} from '../../api/config'
+import * as chalk from 'chalk'
 
 export default class Remove extends Command {
   static description = 'Remove one or all directus config'
@@ -10,8 +11,8 @@ export default class Remove extends Command {
   ]
 
   static flags = {
-    all: Flags.boolean({char: 'a', description: 'Remove all configuration', required: false}),
-    name: Flags.string({char: 'n', description: 'Remove one configuration', required: false}),
+    all: Flags.boolean({char: 'a', description: 'Remove all configurations', required: false, exclusive: ['name']}),
+    name: Flags.string({char: 'n', description: 'Remove one configuration', required: false, exclusive: ['all']}),
   }
 
   static args = []
@@ -22,16 +23,24 @@ export default class Remove extends Command {
     const {flags} = await this.parse(Remove)
 
     if (!flags.all && !flags.name) {
-      this.error('A config name or flag -a must be specified')
+      this.error('A config name or flag all must be specified')
     }
 
     if (flags.all) {
       saveConfig([], this.configPath)
+      this.log('All configuration were removed')
       return
     }
 
-    const environmentList: DirectusConfig[] = listConfig(this.configPath).filter(env => env.name !== flags.name)
-    saveConfig(environmentList, this.configPath)
-    this.log(JSON.stringify(environmentList))
+    const currentConfList = listConfig(this.configPath)
+    const filteredConfList: DirectusConfig[] = currentConfList.filter(env => env.name !== flags.name)
+
+    if (filteredConfList.length === currentConfList.length) {
+      this.error(`Configuration with name ${chalk.red(flags.name)} was not found`)
+    }
+
+    saveConfig(filteredConfList, this.configPath)
+
+    this.log(`Configuration ${chalk.red(flags.name)} was removed`)
   }
 }
