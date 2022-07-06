@@ -1,7 +1,7 @@
 directus-sync-cli
 =================
 
-directus-sync-cli Index CLI
+directus-sync-cli Preset CLI
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/oclif-hello-world.svg)](https://npmjs.org/package/oclif-hello-world)
@@ -138,7 +138,7 @@ EXAMPLES
   $ directus-sync-cli plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.0/src/commands/plugins/index.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.1.0/src/commands/plugins/preset.ts)_
 
 ## `directus-sync-cli plugins:install PLUGIN...`
 

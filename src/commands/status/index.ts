@@ -4,7 +4,7 @@ import {getConfig} from '../../api/config'
 import Table = require('cli-table')
 import * as chalk from 'chalk'
 
-export default class Index extends Command {
+export default class Status extends Command {
   static description = 'Get the status for an environment'
 
   static examples = [
@@ -22,7 +22,7 @@ hello world! (./src/commands/hello/world.ts)
   private configPath = `${this.config.configDir}/config.json`
 
   async run(): Promise<void> {
-    const {flags} = await this.parse(Index)
+    const {flags} = await this.parse(Status)
     const config = getConfig(flags.name, this.configPath)
 
     if (!config) {
@@ -39,6 +39,7 @@ hello world! (./src/commands/hello/world.ts)
       ],
     })
     table.push([response.serviceId, response.status, response.releaseId])
+    this.log(chalk.bold.blueBright('Instance status'))
     this.log(table.toString())
 
     if (response.checks) {
