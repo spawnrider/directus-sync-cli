@@ -1,6 +1,5 @@
 import {Command} from '@oclif/core'
 import {listConfig} from '../../api/config'
-// eslint-disable-next-line unicorn/import-style
 import * as chalk from 'chalk'
 import Table = require('cli-table')
 

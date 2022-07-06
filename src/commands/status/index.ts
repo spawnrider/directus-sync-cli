@@ -1,5 +1,5 @@
 import {Command, Flags} from '@oclif/core'
-import {getHealth} from '../../api/directus'
+import {directusApi} from '../../api/directus-api'
 import {getConfig} from '../../api/config'
 import Table = require('cli-table')
 import * as chalk from 'chalk'
@@ -29,7 +29,7 @@ hello world! (./src/commands/hello/world.ts)
       this.error(`No configuration with name ${flags.name} was found`)
     }
 
-    const response: any = await getHealth(config)
+    const response: any = await directusApi.getHealth(config)
 
     const table = new Table({
       head: [
