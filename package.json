@@ -1,6 +1,6 @@
 {
   "name": "directus-sync-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Directus cli to sync envs",
   "author": "@spawnrider,@Aqwarium",
   "bin": {
@@ -73,7 +73,12 @@
   },
   "bugs": "https://github.com/spawnrider/directus-sync-cli/issues",
   "keywords": [
-    "oclif"
+    "directus",
+    "cli",
+    "environment",
+    "sync",
+    "CMS",
+    "snapshot"
   ],
   "types": "dist/index.d.ts"
 }

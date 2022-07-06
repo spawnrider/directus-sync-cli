@@ -19,7 +19,7 @@ $ npm install -g directus-sync-cli
 $ directus-sync-cli COMMAND
 running command...
 $ directus-sync-cli (--version)
-directus-sync-cli/0.0.1 darwin-arm64 node-v14.18.1
+directus-sync-cli/0.0.2 darwin-arm64 node-v14.18.1
 $ directus-sync-cli --help [COMMAND]
 USAGE
   $ directus-sync-cli COMMAND
@@ -369,7 +369,7 @@ EXAMPLES
   hello world! (./src/commands/hello/world.ts)
 ```
 
-_See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.1/dist/commands/status/index.ts)_
+_See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.2/dist/commands/status/index.ts)_
 
 ## `directus-sync-cli sync preset`
 
