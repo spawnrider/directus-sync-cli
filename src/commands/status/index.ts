@@ -1,32 +1,28 @@
 import {Command, Flags} from '@oclif/core'
-import {directusApi} from '../../api/directus-api'
 import {DirectusConfig, getConfig, listConfig} from '../../api/config'
 import * as chalk from 'chalk'
+import directusApi from '../../api/directus-api'
 import Table = require('cli-table')
-import {table} from '@oclif/core/lib/cli-ux/styled/table'
-import flags = table.flags
 
 export default class Status extends Command {
   static description = 'Get the status for an environment'
 
   static examples = [
-    `$ oex hello world
-hello world! (./src/commands/hello/world.ts)
-`,
+    '$ oex status',
+    '$ oex status -n <NAME>',
+    '$ oex status -d -n <NAME>',
   ]
 
   static flags = {
-    all: Flags.boolean({
-      char: 'a',
-      description: 'Get the status of all configurations',
-      required: false,
-      exclusive: ['name'],
-    }),
     name: Flags.string({
       char: 'n',
       description: 'Get the status of one configuration',
       required: false,
-      exclusive: ['all'],
+    }),
+    detailed: Flags.boolean({
+      char: 'd',
+      description: 'Get the detailed status of one configuration',
+      required: false,
     }),
   }
 
@@ -36,10 +32,6 @@ hello world! (./src/commands/hello/world.ts)
 
   async run(): Promise<void> {
     const {flags} = await this.parse(Status)
-
-    if (!flags.all && !flags.name) {
-      this.error('A config name or flag all must be specified')
-    }
 
     let configsToCheck = listConfig(this.configPath)
 
@@ -55,13 +47,13 @@ hello world! (./src/commands/hello/world.ts)
 
     const results = []
     for (const conf of configsToCheck) {
-      results.push(this.getConfigurationStatus(conf))
+      results.push(this.getConfigurationStatus(conf, flags))
     }
 
     await Promise.all(results)
   }
 
-  async getConfigurationStatus(config: DirectusConfig): Promise<void> {
+  async getConfigurationStatus(config: DirectusConfig, flags: any): Promise<void> {
     const response: any = await directusApi.getHealth(config)
 
     const table = new Table({
@@ -75,7 +67,7 @@ hello world! (./src/commands/hello/world.ts)
     this.log(chalk.bold.blueBright(`Instance status for configuration ${config.name}`))
     this.log(table.toString())
 
-    if (response.checks) {
+    if (response.checks && flags.detailed) {
       const fullTable = new Table({
         head: [
           chalk.bold.blueBright('name'),

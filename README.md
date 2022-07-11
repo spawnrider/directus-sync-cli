@@ -28,7 +28,68 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`directus-sync-cli env add`](#directus-sync-cli-env-add)
+* [`directus-sync-cli env list`](#directus-sync-cli-env-list)
+* [`directus-sync-cli env remove`](#directus-sync-cli-env-remove)
 * [`directus-sync-cli help [COMMAND]`](#directus-sync-cli-help-command)
+* [`directus-sync-cli status`](#directus-sync-cli-status)
+* [`directus-sync-cli sync presets`](#directus-sync-cli-sync-presets)
+
+## `directus-sync-cli env add`
+
+Add a directus configuration
+
+```
+USAGE
+  $ directus-sync-cli env add -n <value> -u <value> -t <value>
+
+FLAGS
+  -n, --name=<value>   (required) Name of the directus environment
+  -t, --token=<value>  (required) Access token of the directus
+  -u, --url=<value>    (required) Base url of the directus
+
+DESCRIPTION
+  Add a directus configuration
+
+EXAMPLES
+  $ oex env add -n <NAME> -u <URL> -t <TOKEN>
+```
+
+## `directus-sync-cli env list`
+
+List all saved directus configs
+
+```
+USAGE
+  $ directus-sync-cli env list
+
+DESCRIPTION
+  List all saved directus configs
+
+EXAMPLES
+  $ oex list
+```
+
+## `directus-sync-cli env remove`
+
+Remove one or all directus config
+
+```
+USAGE
+  $ directus-sync-cli env remove [-a | -n <value>]
+
+FLAGS
+  -a, --all           Remove all configurations
+  -n, --name=<value>  Remove one configuration
+
+DESCRIPTION
+  Remove one or all directus config
+
+EXAMPLES
+  $ oex env remove -a
+
+  $ oex env remove -n <NAME>
+```
 
 ## `directus-sync-cli help [COMMAND]`
 
@@ -49,4 +110,44 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+
+## `directus-sync-cli status`
+
+Get the status for an environment
+
+```
+USAGE
+  $ directus-sync-cli status [-n <value>]
+
+FLAGS
+  -n, --name=<value>  Get the status of one configuration
+
+DESCRIPTION
+  Get the status for an environment
+
+EXAMPLES
+  $ oex hello world
+  hello world! (./src/commands/hello/world.ts)
+```
+
+_See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.4/dist/commands/status/index.ts)_
+
+## `directus-sync-cli sync presets`
+
+Get the status for an environment
+
+```
+USAGE
+  $ directus-sync-cli sync presets [-f]
+
+FLAGS
+  -f, --force  Force comand if the version are not identical
+
+DESCRIPTION
+  Get the status for an environment
+
+EXAMPLES
+  $ oex hello world
+  hello world! (./src/commands/hello/world.ts)
+```
 <!-- commandsstop -->
