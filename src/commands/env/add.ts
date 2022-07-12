@@ -2,6 +2,7 @@ import {Flags} from '@oclif/core';
 import {DirectusConfig, DirectusSyncCliCommand} from '../../types/directus-sync-cli-command';
 import * as chalk from 'chalk';
 import directusApi from '../../api/directus-api';
+import List from './list';
 
 export default class Add extends DirectusSyncCliCommand {
   static description = 'Add a directus configuration'
@@ -44,6 +45,8 @@ export default class Add extends DirectusSyncCliCommand {
         environmentList.push(config);
         this.saveConfig(environmentList);
         this.log(chalk.green(`Environment ${config.name} successfully added`));
+
+        await List.run();
       }
     } else {
       this.log(chalk.bold.red('Ping failed on this environment'));

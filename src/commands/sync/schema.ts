@@ -4,7 +4,7 @@ import * as chalk from 'chalk';
 import {DirectusConfig, DirectusSyncCliCommand} from '../../types/directus-sync-cli-command';
 
 export default class Schema extends DirectusSyncCliCommand {
-  static description = 'Get the status for an environment'
+  static description = 'Sync schema between multiple environment'
 
   static examples = [
     '$ oex hello world hello world! (./src/commands/hello/world.ts)',
@@ -33,7 +33,7 @@ export default class Schema extends DirectusSyncCliCommand {
 
     const fromConfig = this.getConfig(flags.from);
 
-    const toConfig = this.getConfig(flags.from);
+    const toConfig = this.getConfig(flags.to);
     if (!toConfig) {
       this.error(`Configuration with name ${chalk.red(flags.to)} was not found`);
     }

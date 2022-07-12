@@ -2,7 +2,7 @@ import {Flags} from '@oclif/core';
 import {DirectusSyncCliCommand} from '../../types/directus-sync-cli-command';
 
 export default class Presets extends DirectusSyncCliCommand {
-  static description = 'Get the status for an environment'
+  static description = 'Sync presets between multiple environment'
 
   static examples = [
     `$ oex hello world
