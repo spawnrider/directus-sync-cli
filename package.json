@@ -23,7 +23,9 @@
     "axios": "^0.27.2",
     "chalk": "^4.1.2",
     "cli-table": "^0.3.11",
-    "inquirer": "^8.2.4"
+    "form-data": "^4.0.0",
+    "inquirer": "^8.2.4",
+    "listr": "^0.14.3"
   },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",
@@ -71,7 +73,8 @@
     "posttest": "npm lint",
     "prepack": "npm run build && oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif readme && git add README.md"
+    "version": "oclif readme && git add README.md",
+    "t": "./bin/dev sync schema --from suez-int --to suez-2"
   },
   "engines": {
     "node": ">=12.0.0"
