@@ -1,12 +1,12 @@
 /* eslint-disable max-depth */
-import {Command, Flags} from '@oclif/core'
-import {DirectusConfig, getConfig, listConfig} from '../../api/config'
-import * as chalk from 'chalk'
-import utils from '../../shared/utils'
-import directusApi from '../../api/directus-api'
+import {Flags} from '@oclif/core';
+import * as chalk from 'chalk';
+import utils from '../../shared/utils';
+import directusApi from '../../api/directus-api';
+import {DirectusConfig, DirectusSyncCliCommand} from '../../types/directus-sync-cli-command';
 import Table = require('cli-table')
 
-export default class Status extends Command {
+export default class Status extends DirectusSyncCliCommand {
   static description = 'Get the status for an environment'
 
   static examples = [
@@ -30,34 +30,33 @@ export default class Status extends Command {
 
   static args = []
 
-  private configPath = `${this.config.configDir}/config.json`
-
   async run(): Promise<void> {
-    const {flags} = await this.parse(Status)
+    const {flags} = await this.parse(Status);
 
-    let configsToCheck = listConfig(this.configPath)
+    let configsToCheck = this.listConfig();
 
     if (flags.name) {
-      const config = getConfig(flags.name!, this.configPath)
+      const config = this.getConfig(flags.name!);
 
       if (!config) {
-        this.error(`Configuration with name ${chalk.red(flags.name)} was not found`)
+        this.error(`Configuration with name ${chalk.red(flags.name)} was not found`);
       }
 
-      configsToCheck = [config]
+      configsToCheck = [config];
     }
 
-    const results = []
+    const results = [];
     for (const conf of configsToCheck) {
-      results.push(this.getConfigurationStatus(conf, flags))
+      results.push(this.getConfigurationStatus(conf));
     }
 
-    await Promise.all(results)
+    await Promise.all(results);
   }
 
-  async getConfigurationStatus(config: DirectusConfig, flags: any): Promise<void> {
-    const healthResponse: any = await directusApi.getHealth(config)
-    const infoResponse: any = await directusApi.getInfo(config)
+  async getConfigurationStatus(config: DirectusConfig): Promise<void> {
+    const {flags} = await this.parse(Status);
+    const healthResponse: any = await directusApi.getHealth(config, this);
+    const infoResponse: any = await directusApi.getInfo(config);
 
     const table = new Table({
       head: [
@@ -70,11 +69,11 @@ export default class Status extends Command {
         chalk.bold.blueBright('node Version'),
         chalk.bold.blueBright('node Uptime'),
       ],
-    })
-    table.push([healthResponse.serviceId, utils.getChalkForKeyword(healthResponse.status)(healthResponse.status), healthResponse.releaseId, infoResponse.os.type, infoResponse.os.version, infoResponse.os.uptime, infoResponse.node.version, infoResponse.node.uptime])
+    });
+    table.push([healthResponse.serviceId, utils.getChalkForKeyword(healthResponse.status)(healthResponse.status), healthResponse.releaseId, infoResponse.os.type, infoResponse.os.version, infoResponse.os.uptime, infoResponse.node.version, infoResponse.node.uptime]);
 
-    this.log(chalk.bold.blueBright(`Instance status for configuration ${config.name}`))
-    this.log(table.toString())
+    this.log(chalk.bold.blueBright(`Instance status for configuration ${config.name}`));
+    this.log(table.toString());
 
     if (healthResponse.checks && flags.detailed) {
       const fullTable = new Table({
@@ -86,7 +85,7 @@ export default class Status extends Command {
           chalk.bold.blueBright('observedValue'),
           chalk.bold.blueBright('threshold'),
         ],
-      })
+      });
 
       for (const key of Object.keys(healthResponse.checks)) {
         for (const serviceStatus of healthResponse.checks[key]) {
@@ -97,25 +96,25 @@ export default class Status extends Command {
             observedUnit: '',
             observedValue: '',
             threshold: '',
-          }
+          };
 
           for (const key of Object.keys(data)) {
             if (serviceStatus[key]) {
               if (key === 'status') {
-                data[key] = utils.getChalkForKeyword(serviceStatus[key])(serviceStatus[key])
+                data[key] = utils.getChalkForKeyword(serviceStatus[key])(serviceStatus[key]);
               } else {
-                data[key] = serviceStatus[key]
+                data[key] = serviceStatus[key];
               }
             }
           }
 
-          const list = Object.entries(data).map(data => data[1])
-          fullTable.push([...list])
+          const list = Object.entries(data).map(data => data[1]);
+          fullTable.push([...list]);
         }
       }
 
-      this.log(chalk.bold.blueBright('Services status'))
-      this.log(fullTable.toString())
+      this.log(chalk.bold.blueBright('Services status'));
+      this.log(fullTable.toString());
     }
   }
 }

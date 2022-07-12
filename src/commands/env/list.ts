@@ -1,9 +1,8 @@
-import {Command} from '@oclif/core'
-import {listConfig} from '../../api/config'
-import * as chalk from 'chalk'
+import * as chalk from 'chalk';
+import {DirectusSyncCliCommand} from '../../types/directus-sync-cli-command';
 import Table = require('cli-table')
 
-export default class List extends Command {
+export default class List extends DirectusSyncCliCommand {
   static description = 'List all saved directus configs'
 
   static examples = [
@@ -14,8 +13,6 @@ export default class List extends Command {
 
   static args = []
 
-  private configPath = `${this.config.configDir}/config.json`
-
   async run(): Promise<void> {
     const table = new Table({
       head: [
@@ -23,12 +20,12 @@ export default class List extends Command {
         chalk.blueBright('url'),
         chalk.blueBright('token'),
       ],
-    })
+    });
 
-    for (const conf of listConfig(this.configPath)) {
-      table.push([conf.name, conf.url, conf.token])
+    for (const conf of this.listConfig()) {
+      table.push([conf.name, conf.url, conf.token]);
     }
 
-    this.log(table.toString())
+    this.log(table.toString());
   }
 }

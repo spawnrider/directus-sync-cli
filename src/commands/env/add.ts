@@ -1,9 +1,9 @@
-import {Command, Flags} from '@oclif/core'
-import * as chalk from 'chalk'
-import {DirectusConfig, listConfig, saveConfig} from '../../api/config'
-import directusApi from '../../api/directus-api'
+import {Flags} from '@oclif/core';
+import {DirectusConfig, DirectusSyncCliCommand} from '../../types/directus-sync-cli-command';
+import * as chalk from 'chalk';
+import directusApi from '../../api/directus-api';
 
-export default class Add extends Command {
+export default class Add extends DirectusSyncCliCommand {
   static description = 'Add a directus configuration'
 
   static examples = [
@@ -21,46 +21,33 @@ export default class Add extends Command {
 
   static args = []
 
-  private configPath = `${this.config.configDir}/config.json`
-
   async run(): Promise<void> {
-    const {flags} = await this.parse(Add)
-    let environmentList: DirectusConfig[] = listConfig(this.configPath)
+    const {flags} = await this.parse(Add);
+    let environmentList: DirectusConfig[] = this.listConfig();
 
     const config: DirectusConfig = {
       name: flags.name,
       url: flags.url,
       token: flags.token,
-    }
+    };
 
     // Ping only if check is true
-    const check: boolean = flags.check ? await this.doPing(config) : true
+    const check: boolean = flags.check ? await directusApi.getPing(config, this) : true;
 
     if (check) {
       // Check if we have to override an existing environment
       if (!flags.override && environmentList.some(conf => conf.name === config.name)) {
-        this.log(chalk.red(`The environmnet ${config.name} already exist`))
-        this.log('Use --override option if you want to update it')
+        this.log(chalk.red(`The environment ${config.name} already exist`));
+        this.log('Use --override option if you want to update it');
       } else {
-        environmentList = environmentList.filter(item => item.name !== config.name)
-        environmentList.push(config)
-        saveConfig(environmentList, this.configPath)
-        this.log(chalk.green(`Environment ${config.name} successfully added`))
+        environmentList = environmentList.filter(item => item.name !== config.name);
+        environmentList.push(config);
+        this.saveConfig(environmentList);
+        this.log(chalk.green(`Environment ${config.name} successfully added`));
       }
     } else {
-      this.log(chalk.bold.red('Ping failed on this environment'))
-      this.log('Use --no-check option if you really want to add it')
-    }
-  }
-
-  async doPing(config: DirectusConfig): Promise<boolean> {
-    try {
-      const pong = await directusApi.getPing(config)
-      return pong === 'pong'
-    } catch (error: any) {
-      const e: Error = error
-      this.log(e.message)
-      return false
+      this.log(chalk.bold.red('Ping failed on this environment'));
+      this.log('Use --no-check option if you really want to add it');
     }
   }
 }

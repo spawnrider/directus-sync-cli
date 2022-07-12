@@ -4,6 +4,7 @@
     "oclif-typescript"
   ],
   "rules": {
-    "unicorn/import-style": "warn"
+    "unicorn/import-style": "warn",
+    "semi": ["error", "always"]
   }
 }
