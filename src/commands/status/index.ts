@@ -10,9 +10,9 @@ export default class Status extends DirectusSyncCliCommand {
   static description = 'Get the status for an environment'
 
   static examples = [
-    '$ oex status',
-    '$ oex status -n <NAME>',
-    '$ oex status -d -n <NAME>',
+    '$ directus-sync-cli status',
+    '$ directus-sync-cli status -n <NAME>',
+    '$ directus-sync-cli status -d -n <NAME>',
   ]
 
   static flags = {

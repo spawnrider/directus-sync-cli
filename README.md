@@ -19,7 +19,7 @@ $ npm install -g directus-sync-cli
 $ directus-sync-cli COMMAND
 running command...
 $ directus-sync-cli (--version)
-directus-sync-cli/0.0.4 darwin-arm64 node-v14.18.1
+directus-sync-cli/0.0.4 darwin-x64 node-v14.19.0
 $ directus-sync-cli --help [COMMAND]
 USAGE
   $ directus-sync-cli COMMAND
@@ -34,6 +34,7 @@ USAGE
 * [`directus-sync-cli help [COMMAND]`](#directus-sync-cli-help-command)
 * [`directus-sync-cli status`](#directus-sync-cli-status)
 * [`directus-sync-cli sync presets`](#directus-sync-cli-sync-presets)
+* [`directus-sync-cli sync schema`](#directus-sync-cli-sync-schema)
 
 ## `directus-sync-cli env add`
 
@@ -157,5 +158,25 @@ DESCRIPTION
 EXAMPLES
   $ oex hello world
   hello world! (./src/commands/hello/world.ts)
+```
+
+## `directus-sync-cli sync schema`
+
+Get the status for an environment
+
+```
+USAGE
+  $ directus-sync-cli sync schema --from <value> --to <value> [-f]
+
+FLAGS
+  -f, --force     Force comand if the version are not identical
+  --from=<value>  (required) Name of the configuration to use as base for export
+  --to=<value>    (required) Name of the configuration to use as target for export
+
+DESCRIPTION
+  Get the status for an environment
+
+EXAMPLES
+  $ oex hello world hello world! (./src/commands/hello/world.ts)
 ```
 <!-- commandsstop -->

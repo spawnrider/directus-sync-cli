@@ -7,8 +7,8 @@ export default class Add extends DirectusSyncCliCommand {
   static description = 'Add a directus configuration'
 
   static examples = [
-    '$ oex env add -n <NAME> -u <URL> -t <TOKEN>',
-    '$ oex env add -n <NAME> -u <URL> -t <TOKEN> --no-check',
+    '$ directus-sync-cli env add -n <NAME> -u <URL> -t <TOKEN>',
+    '$ directus-sync-cli env add -n <NAME> -u <URL> -t <TOKEN> --no-check',
   ]
 
   static flags = {
