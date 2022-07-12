@@ -6,8 +6,8 @@ export default class Remove extends DirectusSyncCliCommand {
   static description = 'Remove one or all directus config'
 
   static examples = [
-    '$ oex env remove -a',
-    '$ oex env remove -n <NAME>',
+    '$ directus-sync-cli env remove -a',
+    '$ directus-sync-cli env remove -n <NAME>',
   ]
 
   static flags = {

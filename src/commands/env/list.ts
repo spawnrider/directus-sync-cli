@@ -6,7 +6,7 @@ export default class List extends DirectusSyncCliCommand {
   static description = 'List all saved directus configs'
 
   static examples = [
-    '$ oex list',
+    '$ directus-sync-cli list',
   ]
 
   static flags = {}
