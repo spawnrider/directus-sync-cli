@@ -19,7 +19,7 @@ $ npm install -g directus-sync-cli
 $ directus-sync-cli COMMAND
 running command...
 $ directus-sync-cli (--version)
-directus-sync-cli/0.0.4 darwin-x64 node-v14.19.0
+directus-sync-cli/0.0.4 darwin-arm64 node-v14.18.1
 $ directus-sync-cli --help [COMMAND]
 USAGE
   $ directus-sync-cli COMMAND
@@ -41,10 +41,12 @@ Add a directus configuration
 
 ```
 USAGE
-  $ directus-sync-cli env add -n <value> -u <value> -t <value>
+  $ directus-sync-cli env add -n <value> -u <value> -t <value> [-c] [-o]
 
 FLAGS
+  -c, --[no-]check     Force adding environment without verification
   -n, --name=<value>   (required) Name of the directus environment
+  -o, --override       Force updating an existing environment
   -t, --token=<value>  (required) Access token of the directus
   -u, --url=<value>    (required) Base url of the directus
 
@@ -53,6 +55,8 @@ DESCRIPTION
 
 EXAMPLES
   $ oex env add -n <NAME> -u <URL> -t <TOKEN>
+
+  $ oex env add -n <NAME> -u <URL> -t <TOKEN> --no-check
 ```
 
 ## `directus-sync-cli env list`
@@ -117,17 +121,21 @@ Get the status for an environment
 
 ```
 USAGE
-  $ directus-sync-cli status [-n <value>]
+  $ directus-sync-cli status [-n <value>] [-d]
 
 FLAGS
+  -d, --detailed      Get services status of one configuration
   -n, --name=<value>  Get the status of one configuration
 
 DESCRIPTION
   Get the status for an environment
 
 EXAMPLES
-  $ oex hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ oex status
+
+  $ oex status -n <NAME>
+
+  $ oex status -d -n <NAME>
 ```
 
 _See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.4/dist/commands/status/index.ts)_

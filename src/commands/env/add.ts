@@ -1,17 +1,22 @@
 import {Command, Flags} from '@oclif/core'
+import * as chalk from 'chalk'
 import {DirectusConfig, listConfig, saveConfig} from '../../api/config'
+import directusApi from '../../api/directus-api'
 
 export default class Add extends Command {
   static description = 'Add a directus configuration'
 
   static examples = [
     '$ oex env add -n <NAME> -u <URL> -t <TOKEN>',
+    '$ oex env add -n <NAME> -u <URL> -t <TOKEN> --no-check',
   ]
 
   static flags = {
     name: Flags.string({char: 'n', description: 'Name of the directus environment', required: true}),
     url: Flags.string({char: 'u', description: 'Base url of the directus', required: true}),
     token: Flags.string({char: 't', description: 'Access token of the directus', required: true}),
+    check: Flags.boolean({char: 'c', description: 'Force adding environment without verification', required: false, default: true,  allowNo: true}),
+    override: Flags.boolean({char: 'o', description: 'Force updating an existing environment', required: false, default: false}),
   }
 
   static args = []
@@ -20,16 +25,42 @@ export default class Add extends Command {
 
   async run(): Promise<void> {
     const {flags} = await this.parse(Add)
-    const environmentList: DirectusConfig[] = listConfig(this.configPath)
+    let environmentList: DirectusConfig[] = listConfig(this.configPath)
 
-    environmentList.push({
+    const config: DirectusConfig = {
       name: flags.name,
       url: flags.url,
       token: flags.token,
-    })
+    }
 
-    saveConfig(environmentList, this.configPath)
+    // Ping only if check is true
+    const check: boolean = flags.check ? await this.doPing(config) : true
 
-    this.log(JSON.stringify(environmentList))
+    if (check) {
+      // Check if we have to override an existing environment
+      if (!flags.override && environmentList.some(conf => conf.name === config.name)) {
+        this.log(chalk.red(`The environmnet ${config.name} already exist`))
+        this.log('Use --override option if you want to update it')
+      } else {
+        environmentList = environmentList.filter(item => item.name !== config.name)
+        environmentList.push(config)
+        saveConfig(environmentList, this.configPath)
+        this.log(chalk.green(`Environment ${config.name} successfully added`))
+      }
+    } else {
+      this.log(chalk.bold.red('Ping failed on this environment'))
+      this.log('Use --no-check option if you really want to add it')
+    }
+  }
+
+  async doPing(config: DirectusConfig): Promise<boolean> {
+    try {
+      const pong = await directusApi.getPing(config)
+      return pong === 'pong'
+    } catch (error: any) {
+      const e: Error = error
+      this.log(e.message)
+      return false
+    }
   }
 }

@@ -1,6 +1,8 @@
+/* eslint-disable max-depth */
 import {Command, Flags} from '@oclif/core'
 import {DirectusConfig, getConfig, listConfig} from '../../api/config'
 import * as chalk from 'chalk'
+import utils from '../../shared/utils'
 import directusApi from '../../api/directus-api'
 import Table = require('cli-table')
 
@@ -21,7 +23,7 @@ export default class Status extends Command {
     }),
     detailed: Flags.boolean({
       char: 'd',
-      description: 'Get the detailed status of one configuration',
+      description: 'Get services status of one configuration',
       required: false,
     }),
   }
@@ -54,20 +56,27 @@ export default class Status extends Command {
   }
 
   async getConfigurationStatus(config: DirectusConfig, flags: any): Promise<void> {
-    const response: any = await directusApi.getHealth(config)
+    const healthResponse: any = await directusApi.getHealth(config)
+    const infoResponse: any = await directusApi.getInfo(config)
 
     const table = new Table({
       head: [
-        chalk.bold.blueBright('name'),
+        chalk.bold.blueBright('service Id'),
         chalk.bold.blueBright('status'),
-        chalk.bold.blueBright('releaseId'),
+        chalk.bold.blueBright('release Id'),
+        chalk.bold.blueBright('OS Type'),
+        chalk.bold.blueBright('OS Version'),
+        chalk.bold.blueBright('OS Uptime'),
+        chalk.bold.blueBright('node Version'),
+        chalk.bold.blueBright('node Uptime'),
       ],
     })
-    table.push([response.serviceId, response.status, response.releaseId])
+    table.push([healthResponse.serviceId, utils.getChalkForKeyword(healthResponse.status)(healthResponse.status), healthResponse.releaseId, infoResponse.os.type, infoResponse.os.version, infoResponse.os.uptime, infoResponse.node.version, infoResponse.node.uptime])
+
     this.log(chalk.bold.blueBright(`Instance status for configuration ${config.name}`))
     this.log(table.toString())
 
-    if (response.checks && flags.detailed) {
+    if (healthResponse.checks && flags.detailed) {
       const fullTable = new Table({
         head: [
           chalk.bold.blueBright('name'),
@@ -79,8 +88,8 @@ export default class Status extends Command {
         ],
       })
 
-      for (const key of Object.keys(response.checks)) {
-        for (const serviceStatus of response.checks[key]) {
+      for (const key of Object.keys(healthResponse.checks)) {
+        for (const serviceStatus of healthResponse.checks[key]) {
           const data: any = {
             name: key,
             status: '',
@@ -92,7 +101,11 @@ export default class Status extends Command {
 
           for (const key of Object.keys(data)) {
             if (serviceStatus[key]) {
-              data[key] = serviceStatus[key]
+              if (key === 'status') {
+                data[key] = utils.getChalkForKeyword(serviceStatus[key])(serviceStatus[key])
+              } else {
+                data[key] = serviceStatus[key]
+              }
             }
           }
 
@@ -101,7 +114,7 @@ export default class Status extends Command {
         }
       }
 
-      this.log(chalk.bold.blueBright('Service status'))
+      this.log(chalk.bold.blueBright('Services status'))
       this.log(fullTable.toString())
     }
   }
