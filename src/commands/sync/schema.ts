@@ -7,7 +7,7 @@ export default class Schema extends DirectusSyncCliCommand {
   static description = 'Sync schema between multiple environment'
 
   static examples = [
-    '$ oex hello world hello world! (./src/commands/hello/world.ts)',
+    '$ directus-sync-cli hello world hello world! (./src/commands/hello/world.ts)',
   ]
 
   static flags = {

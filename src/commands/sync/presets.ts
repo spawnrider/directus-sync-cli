@@ -5,7 +5,7 @@ export default class Presets extends DirectusSyncCliCommand {
   static description = 'Sync presets between multiple environment'
 
   static examples = [
-    `$ oex hello world
+    `$ directus-sync-cli hello world
 hello world! (./src/commands/hello/world.ts)
 `,
   ]
