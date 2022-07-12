@@ -8,6 +8,7 @@ export default class Add extends Command {
 
   static examples = [
     '$ oex env add -n <NAME> -u <URL> -t <TOKEN>',
+    '$ oex env add -n <NAME> -u <URL> -t <TOKEN> --no-check',
   ]
 
   static flags = {
@@ -15,6 +16,7 @@ export default class Add extends Command {
     url: Flags.string({char: 'u', description: 'Base url of the directus', required: true}),
     token: Flags.string({char: 't', description: 'Access token of the directus', required: true}),
     check: Flags.boolean({char: 'c', description: 'Force adding environment without verification', required: false, default: true,  allowNo: true}),
+    override: Flags.boolean({char: 'o', description: 'Force updating an existing environment', required: false, default: false}),
   }
 
   static args = []
@@ -23,7 +25,7 @@ export default class Add extends Command {
 
   async run(): Promise<void> {
     const {flags} = await this.parse(Add)
-    const environmentList: DirectusConfig[] = listConfig(this.configPath)
+    let environmentList: DirectusConfig[] = listConfig(this.configPath)
 
     const config: DirectusConfig = {
       name: flags.name,
@@ -35,9 +37,16 @@ export default class Add extends Command {
     const check: boolean = flags.check ? await this.doPing(config) : true
 
     if (check) {
-      environmentList.push(config)
-      saveConfig(environmentList, this.configPath)
-      this.log(JSON.stringify(environmentList))
+      // Check if we have to override an existing environment
+      if (!flags.override && environmentList.some(conf => conf.name === config.name)) {
+        this.log(chalk.red(`The environmnet ${config.name} already exist`))
+        this.log('Use --override option if you want to update it')
+      } else {
+        environmentList = environmentList.filter(item => item.name !== config.name)
+        environmentList.push(config)
+        saveConfig(environmentList, this.configPath)
+        this.log(chalk.green(`Environment ${config.name} successfully added`))
+      }
     } else {
       this.log(chalk.bold.red('Ping failed on this environment'))
       this.log('Use --no-check option if you really want to add it')

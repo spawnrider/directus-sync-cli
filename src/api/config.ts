@@ -30,3 +30,8 @@ export const getConfig = (name: string, configPath: string): DirectusConfig | un
   const config: DirectusConfig[] = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}))
   return config.find(conf => conf.name === name)
 }
+
+export const hasConfig = (name: string, configPath: string): boolean => {
+  const config: DirectusConfig[] = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}))
+  return config.some(conf => conf.name === name)
+}
