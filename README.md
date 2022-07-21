@@ -19,7 +19,7 @@ $ npm install -g directus-sync-cli
 $ directus-sync-cli COMMAND
 running command...
 $ directus-sync-cli (--version)
-directus-sync-cli/0.0.4 darwin-x64 node-v14.19.0
+directus-sync-cli/0.0.5 darwin-x64 node-v14.19.0
 $ directus-sync-cli --help [COMMAND]
 USAGE
   $ directus-sync-cli COMMAND
@@ -55,9 +55,9 @@ DESCRIPTION
   Add a directus configuration
 
 EXAMPLES
-  $ oex env add -n <NAME> -u <URL> -t <TOKEN>
+  $ directus-sync-cli env add -n <NAME> -u <URL> -t <TOKEN>
 
-  $ oex env add -n <NAME> -u <URL> -t <TOKEN> --no-check
+  $ directus-sync-cli env add -n <NAME> -u <URL> -t <TOKEN> --no-check
 ```
 
 ## `directus-sync-cli env list`
@@ -72,7 +72,7 @@ DESCRIPTION
   List all saved directus configs
 
 EXAMPLES
-  $ oex list
+  $ directus-sync-cli list
 ```
 
 ## `directus-sync-cli env remove`
@@ -91,9 +91,9 @@ DESCRIPTION
   Remove one or all directus config
 
 EXAMPLES
-  $ oex env remove -a
+  $ directus-sync-cli env remove -a
 
-  $ oex env remove -n <NAME>
+  $ directus-sync-cli env remove -n <NAME>
 ```
 
 ## `directus-sync-cli help [COMMAND]`
@@ -132,51 +132,72 @@ DESCRIPTION
   Get the status for an environment
 
 EXAMPLES
-  $ oex status
+  $ directus-sync-cli status
 
-  $ oex status -n <NAME>
+  $ directus-sync-cli status -n <NAME>
 
-  $ oex status -d -n <NAME>
+  $ directus-sync-cli status -d -n <NAME>
 ```
 
-_See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.4/dist/commands/status/index.ts)_
+_See code: [dist/commands/status/index.ts](https://github.com/spawnrider/directus-sync-cli/blob/v0.0.5/dist/commands/status/index.ts)_
 
 ## `directus-sync-cli sync presets`
 
-Get the status for an environment
+Sync presets between multiple environment.
 
 ```
 USAGE
-  $ directus-sync-cli sync presets [-f]
+  $ directus-sync-cli sync presets -o <value> -t <value> [-f]
 
 FLAGS
-  -f, --force  Force comand if the version are not identical
+  -f, --force           Force flag if the version are not identical
+  -o, --origin=<value>  (required) Name of the configuration to use as base for export
+  -t, --to=<value>      (required) Name of the configuration to use as target for export
 
 DESCRIPTION
-  Get the status for an environment
+  Sync presets between multiple environment.
+
+  The token must be an admin token.
+
+  Process of the command:
+
+  - Get the presets on the origin environment, with user email and name of the role of the preset if specified.
+
+  - Find matching uuid of the users / role on the target environment because it could not be the same.
+
+  - Get the presets of the target environment
+
+  - Delete presets that match the pair (uuid,collection) to avoid conflicts or if global preset, (user: null,collection)
+
+  - Create presets in the target environment.
+
+
 
 EXAMPLES
-  $ oex hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ directus-sync-cli sync presets -o <origin> -t <target>
+
+  $ directus-sync-cli sync presets -o <origin> -t <target> --force
 ```
 
 ## `directus-sync-cli sync schema`
 
-Get the status for an environment
+Sync schema between multiple environment
 
 ```
 USAGE
-  $ directus-sync-cli sync schema --from <value> --to <value> [-f]
+  $ directus-sync-cli sync schema -o <value> -t <value> [-f]
 
 FLAGS
-  -f, --force     Force comand if the version are not identical
-  --from=<value>  (required) Name of the configuration to use as base for export
-  --to=<value>    (required) Name of the configuration to use as target for export
+  -f, --force           Force flag if the version are not identical
+  -o, --origin=<value>  (required) Name of the configuration to use as base for export
+  -t, --to=<value>      (required) Name of the configuration to use as target for export
 
 DESCRIPTION
-  Get the status for an environment
+  Sync schema between multiple environment
 
 EXAMPLES
-  $ oex hello world hello world! (./src/commands/hello/world.ts)
+  $ directus-sync-cli sync schema -o <origin> -t <target>
+
+  $ directus-sync-cli sync schema -o <origin> -t <target> --force
 ```
 <!-- commandsstop -->

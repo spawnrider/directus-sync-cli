@@ -56,7 +56,7 @@ export default class Status extends DirectusSyncCliCommand {
   async getConfigurationStatus(config: DirectusConfig): Promise<void> {
     const {flags} = await this.parse(Status);
     const healthResponse: any = await directusApi.getHealth(config, this);
-    const infoResponse: any = await directusApi.getInfo(config);
+    const infoResponse: any = await directusApi.getInfo(config, this);
 
     const table = new Table({
       head: [

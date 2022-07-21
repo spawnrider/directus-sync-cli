@@ -1,10 +1,9 @@
-import axios from 'axios';
-import {Command} from '@oclif/core';
-import {DirectusConfig} from '../types/directus-sync-cli-command';
-import * as FormData from 'form-data';
-import * as chalk from 'chalk';
+import axios from 'axios'
+import {DirectusConfig, DirectusSyncCliCommand} from '../types/directus-sync-cli-command'
+import * as FormData from 'form-data'
+import * as chalk from 'chalk'
 
-const getPing = async (config: DirectusConfig, command: Command): Promise<boolean> => {
+const getPing = async (config: DirectusConfig, command:DirectusSyncCliCommand): Promise<boolean> => {
   try {
     const {data} = await axios.get(`${config.url}/server/ping`, {headers: {Authorization: `Bearer ${config.token}`}});
     return data === 'pong';
@@ -15,12 +14,17 @@ const getPing = async (config: DirectusConfig, command: Command): Promise<boolea
   }
 };
 
-const getInfo = async (config: DirectusConfig): Promise<any> => {
-  const res = await axios.get(`${config.url}/server/info`, {headers: {Authorization: `Bearer ${config.token}`}});
-  return res.data.data;
+const getInfo = async (config: DirectusConfig, command:DirectusSyncCliCommand): Promise<any> => {
+  try {
+    const res = await axios.get(`${config.url}/server/info`, {headers: {Authorization: `Bearer ${config.token}`}});
+    return res.data.data;
+  } catch (error: any) {
+    const message = (error.isAxiosError && error.message) || error.toString();
+    command.log(chalk.bold.red(`Directus instance ${config.name} is not available, error ${message}`));
+  }
 };
 
-const getHealth = async (config: DirectusConfig, command: Command): Promise<any> => {
+const getHealth = async (config: DirectusConfig, command:DirectusSyncCliCommand): Promise<any> => {
   try {
     const res = await axios.get(`${config.url}/server/health`, {headers: {Authorization: `Bearer ${config.token}`}});
     return res.data;
@@ -30,17 +34,74 @@ const getHealth = async (config: DirectusConfig, command: Command): Promise<any>
   }
 };
 
-const getPresets = async (config: DirectusConfig): Promise<any> => {
-  const res = await axios.get(`${config.url}/presets`, {headers: {Authorization: `Bearer ${config.token}`}});
-  return res.data;
+const getPresets = async (config: DirectusConfig, command:DirectusSyncCliCommand): Promise<any> => {
+  try {
+    const res = await axios.get(`${config.url}/presets`, {
+      headers: {Authorization: `Bearer ${config.token}`}, params: {
+        'fields[]': ['user.email', 'role.name', '*'],
+        limit: -1,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    const message = (error.isAxiosError && error.message) || error.toString();
+    command.error(chalk.bold.red(`Directus instance ${config.name} is not available, error ${message}`));
+  }
 };
 
-const postPresets = async (config: DirectusConfig, presets: any): Promise<any> => {
-  const res = await axios.post(`${config.url}/presets`, presets, {headers: {Authorization: `Bearer ${config.token}`}});
-  return res.data;
+const getUsersIds = async (config: DirectusConfig, userMails: string[], command:DirectusSyncCliCommand): Promise<any> => {
+  try {
+    const res = await axios.get(`${config.url}/users`, {
+      headers: {Authorization: `Bearer ${config.token}`}, params: {
+        filter: {_and: [{email: {_in: userMails}}]},
+        'fields[]': ['email', 'id'],
+        limit: -1,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    const message = (error.isAxiosError && error.message) || error.toString();
+    command.error(chalk.bold.red(`Directus instance ${config.name} is not available, error ${message}`));
+  }
 };
 
-const checkSnapshotExtension = async (config: DirectusConfig, command: Command): Promise<any> => {
+const getRolesIds = async (config: DirectusConfig, roleNames: string[], command:DirectusSyncCliCommand): Promise<any> => {
+  try {
+    const res = await axios.get(`${config.url}/roles`, {
+      headers: {Authorization: `Bearer ${config.token}`}, params: {
+        'fields[]': ['id', 'name'],
+        filter: {_and: [{name: {_in: roleNames}}]},
+        limit: -1,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    const message = (error.isAxiosError && error.message) || error.toString();
+    command.error(chalk.bold.red(`Directus instance ${config.name} is not available, error ${message}`));
+  }
+};
+
+const postPresets = async (config: DirectusConfig, presets: any, command: DirectusSyncCliCommand): Promise<any> => {
+  try {
+    const res = await axios.post(`${config.url}/presets`, presets, {headers: {Authorization: `Bearer ${config.token}`}});
+    return res.data;
+  } catch (error: any) {
+    const message = (error.isAxiosError && error.message) || error.toString();
+    command.error(chalk.bold.red(`Directus instance ${config.name} is not available, error ${message}`));
+  }
+};
+
+const deletePresets = async (config: DirectusConfig, presetIds: number[], command:DirectusSyncCliCommand): Promise<any> => {
+  try {
+    const res = await axios.delete(`${config.url}/presets`, {data: presetIds, headers: {Authorization: `Bearer ${config.token}`}});
+    return res.data;
+  } catch (error: any) {
+    const message = (error.isAxiosError && error.message) || error.toString();
+    command.error(chalk.bold.red(`Directus instance ${config.name} is not available, error ${message}`));
+  }
+};
+
+const checkSnapshotExtension = async (config: DirectusConfig, command:DirectusSyncCliCommand): Promise<any> => {
   try {
     const res = await axios.get(`${config.url}/snapshot`, {headers: {Authorization: `Bearer ${config.token}`}});
     return res.data;
@@ -50,7 +111,7 @@ const checkSnapshotExtension = async (config: DirectusConfig, command: Command):
   }
 };
 
-const exportDirectusSchema = async (config: DirectusConfig, command: Command): Promise<any> => {
+const exportDirectusSchema = async (config: DirectusConfig, command:DirectusSyncCliCommand): Promise<any> => {
   try {
     const res = await axios.get(`${config.url}/snapshot/export`, {headers: {Authorization: `Bearer ${config.token}`}});
     return res.data;
@@ -60,7 +121,7 @@ const exportDirectusSchema = async (config: DirectusConfig, command: Command): P
   }
 };
 
-const importDirectusSchema = async (config: DirectusConfig, file: string, command: Command): Promise<any> => {
+const importDirectusSchema = async (config: DirectusConfig, file: string, command:DirectusSyncCliCommand): Promise<any> => {
   try {
     const formData = new FormData();
     formData.append('file', Buffer.from(file));
@@ -86,4 +147,7 @@ export default {
   checkSnapshotExtension,
   exportDirectusSchema,
   importDirectusSchema,
+  getUsersIds,
+  getRolesIds,
+  deletePresets,
 };
