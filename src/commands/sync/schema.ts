@@ -33,13 +33,7 @@ export default class Schema extends DirectusSyncCliCommand {
 
   async run(): Promise<void> {
     const {flags} = await this.parse(Schema);
-
-<<<<<<< Updated upstream
-    const fromConfig = this.getConfig(flags.from);
-
-=======
     const fromConfig = this.getConfig(flags.origin);
->>>>>>> Stashed changes
     const toConfig = this.getConfig(flags.to);
     if (!toConfig) {
       this.error(`Configuration with name ${chalk.red(flags.to)} was not found`);
