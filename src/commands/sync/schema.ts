@@ -7,21 +7,24 @@ export default class Schema extends DirectusSyncCliCommand {
   static description = 'Sync schema between multiple environment'
 
   static examples = [
-    '$ directus-sync-cli hello world hello world! (./src/commands/hello/world.ts)',
+    '$ directus-sync-cli sync schema -o <origin> -t <target>',
+    '$ directus-sync-cli sync schema -o <origin> -t <target> --force',
   ]
 
   static flags = {
-    from: Flags.string({
+    origin: Flags.string({
+      char: 'o',
       description: 'Name of the configuration to use as base for export',
       required: true,
     }),
     to: Flags.string({
+      char: 't',
       description: 'Name of the configuration to use as target for export',
       required: true,
     }),
     force: Flags.boolean({
       char: 'f',
-      description: 'Force comand if the version are not identical',
+      description: 'Force flag if the version are not identical',
       required: false,
     }),
   }
@@ -31,8 +34,12 @@ export default class Schema extends DirectusSyncCliCommand {
   async run(): Promise<void> {
     const {flags} = await this.parse(Schema);
 
+<<<<<<< Updated upstream
     const fromConfig = this.getConfig(flags.from);
 
+=======
+    const fromConfig = this.getConfig(flags.origin);
+>>>>>>> Stashed changes
     const toConfig = this.getConfig(flags.to);
     if (!toConfig) {
       this.error(`Configuration with name ${chalk.red(flags.to)} was not found`);

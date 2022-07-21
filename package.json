@@ -73,8 +73,7 @@
     "posttest": "npm lint",
     "prepack": "npm run build && oclif manifest && oclif readme",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif readme && git add README.md",
-    "t": "./bin/dev sync schema --from suez-int --to suez-2"
+    "version": "oclif readme && git add README.md"
   },
   "engines": {
     "node": ">=12.0.0"
