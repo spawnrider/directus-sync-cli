@@ -1,6 +1,6 @@
 {
   "name": "directus-sync-cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Directus cli to sync envs",
   "author": "@spawnrider,@Aqwarium",
   "bin": {
